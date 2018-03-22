@@ -22,7 +22,7 @@ String renderer = P3D;
 
 void setup() {
   //use 2^n to change the dimensions
-  size(1024, 1024, renderer);
+  size(512, 512, renderer);
   scene = new Scene(this);
   if (scene.is3D())
     scene.setType(Scene.Type.ORTHOGRAPHIC);
@@ -51,6 +51,7 @@ void setup() {
 
   // init the triangle that's gonna be rasterized
   randomizeTriangle();
+  frameRate(1);
 }
 
 void draw() {
@@ -76,9 +77,26 @@ void triangleRaster() {
   if (debug) {
     pushStyle();
     stroke(255, 255, 0, 125);
-    point(round(frame.coordinatesOf(v1).x()), round(frame.coordinatesOf(v1).y()));
+    
+    int potencia = 512; //(int)Math.pow(2, n-1);
+    for(int i = - potencia; i < potencia; i++){
+      for(int j = - potencia; j < potencia; j++){
+        Vector v4 = new Vector(i, j);
+        // print( frame.coordinatesOf(v4).x() + " " ) ;
+        // print( frame.coordinatesOf(v4).y() ) ;
+        // print ("\n");
+        point( 7, 7);
+      }
+    }
+    
+    // point( round(frame.coordinatesOf(v4).y()), round(frame.coordinatesOf(v4).y()));
+    // point(round(frame.coordinatesOf(v2).x()), round(frame.coordinatesOf(v2).y()));
+    // point(round(frame.coordinatesOf(v3).x()), round(frame.coordinatesOf(v3).y()));
+    
     popStyle();
   }
+  
+  
 }
 
 void randomizeTriangle() {
