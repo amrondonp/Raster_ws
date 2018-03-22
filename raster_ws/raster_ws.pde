@@ -51,7 +51,6 @@ void setup() {
 
   // init the triangle that's gonna be rasterized
   randomizeTriangle();
-  frameRate(1);
 }
 
 void draw() {
@@ -77,15 +76,13 @@ void triangleRaster() {
   if (debug) {
     pushStyle();
     stroke(255, 255, 0, 125);
+    //Vector v4;
     
-    int potencia = 512; //(int)Math.pow(2, n-1);
-    for(int i = - potencia; i < potencia; i++){
-      for(int j = - potencia; j < potencia; j++){
-        Vector v4 = new Vector(i, j);
-        // print( frame.coordinatesOf(v4).x() + " " ) ;
-        // print( frame.coordinatesOf(v4).y() ) ;
-        // print ("\n");
-        point( 7, 7);
+    int potencia = (int)Math.pow(2, n-1);
+    for(int i = - potencia; i <= potencia; i++){
+      for(int j = - potencia; j <= potencia; j++){
+        if( testSide(i,j) )
+          point(i, j);
       }
     }
     
@@ -153,3 +150,22 @@ void keyPressed() {
   if (key == 'y')
     yDirection = !yDirection;
 }
+boolean testSide(float x , float y) {
+      float ax = frame.coordinatesOf(v1).x();
+      float ay = frame.coordinatesOf(v1).y();
+      
+      float bx = frame.coordinatesOf(v2).x();
+      float by = frame.coordinatesOf(v2).y();
+      
+      float cx = frame.coordinatesOf(v3).x();
+      float cy = frame.coordinatesOf(v3).y();
+      
+      // a -> b      
+      float t1 = (( bx - ax) * ( y - ay)) - ((x - ax) * (by - ay));
+      // b -> c
+      float t2 = ((cx - bx) * (y - by)) - ((x - bx) * (cy - by));
+      // c -> a
+      float t3 = ((ax - cx) * (y - cy)) - ((x - cx) * (ay - cy));
+
+      return (t2>0 && t3>0 && t1>0) || (t2<0 && t3<0 && t1<0);
+  }
