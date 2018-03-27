@@ -27,7 +27,7 @@ void setup() {
   if (scene.is3D())
     scene.setType(Scene.Type.ORTHOGRAPHIC);
   scene.setRadius(width/2);
-  scene.fitBallInterpolation();
+  scene.fitBall();
 
   // not really needed here but create a spinning task
   // just to illustrate some frames.timing features. For
@@ -75,14 +75,15 @@ void triangleRaster() {
   // here we convert v1 to illustrate the idea
   if (debug) {
     pushStyle();
-    stroke(255, 255, 0, 125);
+    noStroke();
+    fill(255, 255, 0, 125);
     //Vector v4;
     
     int potencia = (int)Math.pow(2, n-1);
     for(int i = - potencia; i <= potencia; i++){
       for(int j = - potencia; j <= potencia; j++){
         if( testSide(i,j) )
-          point(i, j);
+          rect(i - 0.5, j - 0.5, 1, 1);
       }
     }
     
