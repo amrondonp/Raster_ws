@@ -11,6 +11,7 @@ TimingTask spinningTask;
 boolean yDirection;
 // scaling is a power of 2
 int n = 4;
+int anti = 1;
 
 // 2. Hints
 boolean triangleHint = true;
@@ -50,6 +51,7 @@ void setup() {
   frame.setScaling(width/pow(2, n));
 
   // init the triangle that's gonna be rasterized
+  frameRate(8);
   randomizeTriangle();
 }
 
@@ -68,6 +70,23 @@ void draw() {
   popMatrix();
 }
 
+int getIntensity(int a, int b) {
+  float pixel_witdh = 1/(anti * 1.0);
+  int inside = 0;
+  for(int i = 0; i < anti ; i++){
+    for(int j = 0; j < anti ; j++){
+      float x_a = a + pixel_witdh * i;
+      float y_a = b + pixel_witdh * j;
+      if( testSide(x_a, y_a) ) {
+        inside += 1;
+      }
+    }
+  }
+  
+  int intensity = Math.round(255*(inside/(1.0 * anti * anti)));
+  return intensity;
+}
+
 // Implement this function to rasterize the triangle.
 // Coordinates are given in the frame system which has a dimension of 2^n
 void triangleRaster() {
@@ -82,8 +101,8 @@ void triangleRaster() {
     int potencia = (int)Math.pow(2, n-1);
     for(int i = - potencia; i <= potencia; i++){
       for(int j = - potencia; j <= potencia; j++){
-        if( testSide(i,j) )
-          rect(i - 0.5, j - 0.5, 1, 1);
+        fill(255, 255, 0, getIntensity(i, j));
+        rect(i, j, 1, 1);
       }
     }
     
@@ -150,6 +169,12 @@ void keyPressed() {
       spinningTask.run(20);
   if (key == 'y')
     yDirection = !yDirection;
+  if ( key == 'a'){
+    anti *= 2;
+    if( anti > 16 ){
+      anti = 1;
+    }
+  } 
 }
 boolean testSide(float x , float y) {
       float ax = frame.coordinatesOf(v1).x();
