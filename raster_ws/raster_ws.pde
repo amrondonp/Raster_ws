@@ -100,7 +100,7 @@ void triangleRaster() {
     int potencia = (int)Math.pow(2, n-1);
     for(int i = - potencia; i <= potencia; i++){
       for(int j = - potencia; j <= potencia; j++){
-        fill(255, 255, 0, getIntensity(i, j));
+        putColor(i, j, getIntensity(i, j));
         rect(i, j, 1, 1);
       }
     }
@@ -175,6 +175,32 @@ void keyPressed() {
     }
   } 
 }
+
+void putColor(float x , float y, int intensity) {
+     float ax = frame.coordinatesOf(v1).x();
+      float ay = frame.coordinatesOf(v1).y();
+      
+      float bx = frame.coordinatesOf(v2).x();
+      float by = frame.coordinatesOf(v2).y();
+      
+      float cx = frame.coordinatesOf(v3).x();
+      float cy = frame.coordinatesOf(v3).y();
+      
+      // a -> b      
+      float t1 = abs((( bx - ax) * ( y - ay)) - ((x - ax) * (by - ay)));
+      // b -> c
+      float t2 = abs(((cx - bx) * (y - by)) - ((x - bx) * (cy - by)));
+      // c -> a
+      float t3 = abs(((ax - cx) * (y - cy)) - ((x - cx) * (ay - cy)));
+      
+      float m = max(t1, max(t2, t3));
+      t1/=m;
+      t2/=m;
+      t3/=m;
+      
+      fill(255*(t1), 255*(t2), 255*(t3), intensity);
+  }
+
 boolean testSide(float x , float y) {
       float ax = frame.coordinatesOf(v1).x();
       float ay = frame.coordinatesOf(v1).y();
@@ -193,4 +219,4 @@ boolean testSide(float x , float y) {
       float t3 = ((ax - cx) * (y - cy)) - ((x - cx) * (ay - cy));
 
       return (t2>0 && t3>0 && t1>0) || (t2<0 && t3<0 && t1<0);
-  }
+}
