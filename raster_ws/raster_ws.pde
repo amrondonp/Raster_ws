@@ -51,7 +51,6 @@ void setup() {
   frame.setScaling(width/pow(2, n));
 
   // init the triangle that's gonna be rasterized
-  frameRate(8);
   randomizeTriangle();
 }
 
@@ -171,7 +170,7 @@ void keyPressed() {
     yDirection = !yDirection;
   if ( key == 'a'){
     anti *= 2;
-    if( anti > 16 ){
+    if( anti > 8 ){
       anti = 1;
     }
   } 
